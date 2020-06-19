@@ -1,12 +1,11 @@
-from django.conf.urls import url
-from . import views
 from django.shortcuts import render
-
+from django.utils import timezone
+from .models import Post
 
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
-urlpatterns = [
-    url(r'^$', views.post_list, name='post_list'),
-]
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts': posts})
+    
+
 
 
